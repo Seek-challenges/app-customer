@@ -1,6 +1,7 @@
 package pe.seek.app.customer.infrastructure.adapter.controller.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -13,7 +14,7 @@ public record AppCustomerRequestDTO(
         String phone,
         @NotBlank
         String age,
-        @NotBlank
+        @NotNull
         LocalDate birthDate,
         @NotBlank
         String password
