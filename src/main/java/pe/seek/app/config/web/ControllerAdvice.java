@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pe.seek.app.shared.constants.GenericErrors;
+import pe.seek.app.shared.exception.AuthException;
 import pe.seek.app.shared.exception.EntityWrapperException;
 import pe.seek.app.shared.exception.GeneralEntityException;
 import pe.seek.app.shared.exception.wrapper.ExceptionEntityWrapper;
@@ -18,7 +19,7 @@ import pe.seek.app.shared.exception.wrapper.ExceptionEntityWrapper;
 @Slf4j
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class ControllerAdvice {
+class ControllerAdvice {
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<ExceptionEntityWrapper> handleInternalServerError(Exception ex) {
@@ -49,5 +50,13 @@ public class ControllerAdvice {
                 .message(ex.getMessage())
                 .build());
 
+    }
+
+    @ExceptionHandler({AuthException.class})
+    public ResponseEntity<ExceptionEntityWrapper> handleAuthException(AuthException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ExceptionEntityWrapper.builder()
+                .code("401")
+                .message(ex.getMessage())
+                .build());
     }
 }

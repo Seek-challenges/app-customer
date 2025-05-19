@@ -5,12 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Service;
+import pe.seek.app.customer.application.port.input.AuthServicePort;
 import pe.seek.app.customer.application.port.input.CustomerServicePort;
 import pe.seek.app.customer.application.port.output.CustomerRestPort;
 import pe.seek.app.customer.domain.Customer;
 import pe.seek.app.customer.domain.CustomerMetrics;
 import pe.seek.app.customer.domain.CustomerPrediction;
+import pe.seek.app.customer.domain.TokenDTO;
 import pe.seek.app.shared.exception.EntityWrapperException;
+import pe.seek.app.shared.exception.UserNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,18 +26,21 @@ import static pe.seek.app.shared.constants.AsyncConstants.ASYNC_VIRTUAL_THREAD_T
 @Service
 class CustomerService implements CustomerServicePort {
 
+    private final AuthServicePort authService;
     private final AsyncTaskExecutor executorService;
     private final CustomerRestPort customerRestPort;
 
-    CustomerService(@Qualifier(ASYNC_VIRTUAL_THREAD_TASK_EXECUTOR) AsyncTaskExecutor taskExecutor, CustomerRestPort customerRestPort) {
+    CustomerService(AuthServicePort authService, @Qualifier(ASYNC_VIRTUAL_THREAD_TASK_EXECUTOR) AsyncTaskExecutor taskExecutor, CustomerRestPort customerRestPort) {
+        this.authService = authService;
         this.executorService = taskExecutor;
         this.customerRestPort = customerRestPort;
     }
 
 
     @Override
-    public Customer createCustomer(Customer customer) throws EntityWrapperException {
-        return customerRestPort.createCustomer(customer);
+    public TokenDTO createCustomer(Customer customer, String password) throws EntityWrapperException, UserNotFoundException {
+        customerRestPort.createCustomer(customer);
+        return authService.register(customer.getPhone(), password);
     }
 
     @Override

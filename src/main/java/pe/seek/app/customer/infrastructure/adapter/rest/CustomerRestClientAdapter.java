@@ -49,6 +49,6 @@ class CustomerRestClientAdapter extends RestClientValidator implements CustomerR
     public Customer fallbackCreateCustomer(Customer customer, Exception ex) throws CreateCustomerFallBackException {
         log.warn("Fallback triggered for createCustomer. Sending to publisher. Reason: {}", ex.getMessage());
         customerCreatedPublisherPort.notifyCreatedCustomerFallBack(customer);
-        throw new CreateCustomerFallBackException(GEN_ALL_02);
+        throw new CreateCustomerFallBackException();
     }
 }
