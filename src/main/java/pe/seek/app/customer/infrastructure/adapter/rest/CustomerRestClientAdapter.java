@@ -30,6 +30,7 @@ class CustomerRestClientAdapter extends RestClientValidator implements CustomerR
     @Override
     @Retry(name = "createCustomerFallBackRetry", fallbackMethod = "fallbackCreateCustomer")
     public Customer createCustomer(Customer customer) throws EntityWrapperException {
+        log.info("Creating customer: {}", customer);
         return this.executeCall(
                 customerProxy.createCustomer(customerMapper.toCreateDTOFromDomain(customer)),
                 customerMapper::toDomainFromResponseDTO
@@ -38,6 +39,7 @@ class CustomerRestClientAdapter extends RestClientValidator implements CustomerR
 
     @Override
     public List<Customer> getAllCustomers() throws EntityWrapperException {
+        log.info("Fetching all customers");
         return this.executeCall(
                 customerProxy.getAllCustomers(),
                 customerMapper::toDomainListFromResponseDTO

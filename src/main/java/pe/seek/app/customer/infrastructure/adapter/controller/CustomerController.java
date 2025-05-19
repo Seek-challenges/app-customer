@@ -24,6 +24,7 @@ class CustomerController implements CustomerApi {
 
     @Override
     public AppCustomerResponseDTO createCustomer(AppCustomerRequestDTO request) throws EntityWrapperException {
+        log.info("Creating customer with request: {}", request);
         return customerMapper.toResponseDTOFromDomain(
                 customerService.createCustomer(
                         customerMapper.toDomainFromRequestDTO(request)
@@ -33,6 +34,7 @@ class CustomerController implements CustomerApi {
 
     @Override
     public CustomerMetricsDTO getCustomerMetrics() throws EntityWrapperException {
+        log.info("Fetching customer metrics");
         return customerMapper.toMetricsDTOFromDomain(
                 customerService.getCustomerMetrics()
         );
@@ -40,6 +42,7 @@ class CustomerController implements CustomerApi {
 
     @Override
     public List<CustomerPredictionDTO> getCustomerPredictions() throws EntityWrapperException {
+        log.info("Fetching customer predictions");
         return customerMapper.toPredictionDTOListFromDomain(
                 customerService.getCustomerPrediction()
         );
