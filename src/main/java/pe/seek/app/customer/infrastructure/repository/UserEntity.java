@@ -21,7 +21,7 @@ import java.util.Optional;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "auth_user")
+@Entity(name = "auth_user")
 public class UserEntity implements CopyEntity<UserEntity>, UserDetails {
 
     @Id

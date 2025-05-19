@@ -34,11 +34,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 class SecurityConfig {
 
-    private final JwtFilter jwtFilter;
     private final AuthDataPort authDataPort;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers("/v1/auth/**").permitAll()
