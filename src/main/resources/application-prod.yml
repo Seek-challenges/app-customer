@@ -1,0 +1,26 @@
+aws:
+  cloud:
+    region: ${AWS_REGION}
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
+    sqs:
+      publisher:
+        create-customer-notification: https://sqs.${AWS_REGION}.amazonaws.com/${AWS_ACCOUNT_ID}/create-customer-notification
+      consumer:
+        create-customer-fallback: https://sqs.${AWS_REGION}.amazonaws.com/${AWS_ACCOUNT_ID}/create-customer-fallback
+
+services-api:
+  core:
+    customer:
+      base-url: http://core-customer:8080
+      connectTimeout: 100
+      readTimeout: 100
+      writeTimeout: 100
+      maxRequest: 100
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

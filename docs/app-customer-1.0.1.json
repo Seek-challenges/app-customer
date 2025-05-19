@@ -1,0 +1,116 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Customer API",
+    "description": "API para registrar clientes, obtener métricas y predicciones"
+  },
+  "host": "localhost:8080",
+  "basePath": "/v1/app-customers",
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/": {
+      "post": {
+        "summary": "Crear cliente",
+        "description": "Registra un nuevo cliente",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CustomerRequestDTO"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Cliente creado",
+            "schema": {
+              "$ref": "#/definitions/CustomerResponseDTO"
+            }
+          },
+          "400": {
+            "description": "Error en el request"
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "summary": "Obtener métricas de clientes",
+        "description": "Retorna el promedio de edad, fecha de nacimiento promedio y desviación estándar de edades",
+        "responses": {
+          "200": {
+            "description": "Métricas calculadas",
+            "schema": {
+              "$ref": "#/definitions/CustomerMetricsDTO"
+            }
+          }
+        }
+      }
+    },
+    "/predictions": {
+      "get": {
+        "summary": "Obtener predicción de vida de los clientes",
+        "description": "Lista todos los clientes con datos completos, expectativa de vida y fecha estimada de fallecimiento",
+        "responses": {
+          "200": {
+            "description": "Lista de predicciones",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CustomerPredictionDTO"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CustomerRequestDTO": {
+      "type": "object",
+      "required": ["firstName", "lastName", "phone", "age", "birthDate"],
+      "properties": {
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "phone": { "type": "string" },
+        "age": { "type": "string" },
+        "birthDate": { "type": "string", "format": "date" }
+      }
+    },
+    "CustomerResponseDTO": {
+      "type": "object",
+      "properties": {
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "phone": { "type": "string" },
+        "age": { "type": "string" },
+        "birthDate": { "type": "string", "format": "date" }
+      }
+    },
+    "CustomerMetricsDTO": {
+      "type": "object",
+      "properties": {
+        "averageAge": { "type": "number", "format": "double" },
+        "averageBirthDate": { "type": "number", "format": "double" },
+        "ageStandardDeviation": { "type": "number", "format": "double" }
+      }
+    },
+    "CustomerPredictionDTO": {
+      "type": "object",
+      "properties": {
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "phone": { "type": "string" },
+        "age": { "type": "string" },
+        "birthDate": { "type": "string", "format": "date" },
+        "lifeExpectancy": { "type": "number", "format": "double" },
+        "predictedDeathDate": { "type": "string", "format": "date" }
+      }
+    }
+  }
+}
